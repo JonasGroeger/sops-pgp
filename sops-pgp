@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+
+import sys
+import json
+import subprocess
+
+
+def main(f):
+    with open(f) as cf:
+        data = json.load(cf)
+
+    if 'sops' not in data:
+        sys.exit("File not encrypted with SOPS")
+
+    sops = data['sops']
+    if 'pgp' not in sops:
+        sys.exit("No key 'pgp' in .sops")
+
+    pgp = sops['pgp']
+    fps = [x['fp'] for x in pgp]
+
+    o = subprocess.check_output(['gpg', '--list-public-keys', '--with-colons']).decode("UTF-8").splitlines()
+    m = {}
+    fpr = None
+    for l in o:
+        if not (l.startswith('fpr') or l.startswith('uid')):
+            continue
+
+        if l.startswith('fpr'):
+            fpr = l.split(":")[9]
+
+        if l.startswith('uid'):
+            name = l.split(":")[9]
+            if fpr is None:
+                sys.exit(f"No FPR entry for {name}. Weird.")
+
+            if fpr in m:
+                m[fpr].append(name)
+            else:
+                m[fpr] = [name]
+
+    for f in fps:
+        if f not in m:
+            print(f"No Publickey for {f}")
+
+
+if __name__ == '__main__':
+
+    if len(sys.argv) != 2:
+        sys.exit("Usage: ./sopsinfo FILE")
+
+    main(sys.argv[1])
