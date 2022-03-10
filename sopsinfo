@@ -23,7 +23,7 @@ def main(sopsfile):
     if missing_fingerprints:
         print("")
     for missing_fingerprint in missing_fingerprints:
-        print(f"😭 No identity information for fingerprint {missing_fingerprint}.")
+        print(f"😭  No identity information for fingerprint {missing_fingerprint}.")
 
 
 def get_fingerprints_from_sopsfile(sopsfile):
