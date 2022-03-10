@@ -1,6 +1,6 @@
 # sopsinfo
 
-Helps analyzing the contents of a file managed by [SOPS](https://github.com/mozilla/sops/).
+Helps analyzing the GPG contents of a file managed by [SOPS](https://github.com/mozilla/sops/).
 
 ## Example
 
