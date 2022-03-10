@@ -10,3 +10,5 @@ $ sopsinfo example.json
 😭  Missing identity information for fingerprint 45CDAE4F06CE8DDFC3EAC3EAC6C033490CF2BABE. Do you have the key in the local keyring?
 ```
 
+# License
+MIT
